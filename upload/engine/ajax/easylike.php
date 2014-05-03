@@ -1,9 +1,9 @@
 <?php
 /*
 =============================================================================
-Easy Like - ìîäóëü îðãàíèçàöèè ñèñòåìû ëàéêîâ äëÿ DLE
+Easy Like - Ð¼Ð¾Ð´ÑƒÐ»ÑŒ Ð¾Ñ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ†Ð¸Ð¸ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹ Ð»Ð°Ð¹ÐºÐ¾Ð² Ð´Ð»Ñ DLE
 =============================================================================
-Àâòîð:   ÏàôÍóòèÉ
+ÐÐ²Ñ‚Ð¾Ñ€:   ÐŸÐ°Ñ„ÐÑƒÑ‚Ð¸Ð™
 URL:     http://pafnuty.name/
 twitter: https://twitter.com/pafnuty_name
 google+: http://gplus.to/pafnuty
@@ -11,7 +11,7 @@ email:   pafnuty10@gmail.com
 =============================================================================
 */
 
-// Ââñÿêèå îáÿçàòåëüíûå øòóêè äëÿ ajax DLE
+// Ð’Ð²ÑÑÐºÐ¸Ðµ Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ðµ ÑˆÑ‚ÑƒÐºÐ¸ Ð´Ð»Ñ ajax DLE
 @error_reporting ( E_ALL ^ E_WARNING ^ E_NOTICE );
 @ini_set ( 'display_errors', true );
 @ini_set ( 'html_errors', false );
@@ -42,7 +42,7 @@ if ($config['version_id'] > 9.6) {
 }
 
 
-// Ôèíò ñî ñêèíîì, ÷òîáû íå ñàáìèòèòü åãî â ôîðìå.
+// Ð¤Ð¸Ð½Ñ‚ ÑÐ¾ ÑÐºÐ¸Ð½Ð¾Ð¼, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð½Ðµ ÑÐ°Ð±Ð¼Ð¸Ñ‚Ð¸Ñ‚ÑŒ ÐµÐ³Ð¾ Ð² Ñ„Ð¾Ñ€Ð¼Ðµ.
 $_REQUEST['skin'] = totranslit($config['skin'], false, false);
 
 if( $_REQUEST['skin'] == "" OR !@is_dir( ROOT_DIR . '/templates/' . $_REQUEST['skin'] ) ) {
@@ -71,48 +71,51 @@ if( ! $user_group ) {
 }
 require_once ENGINE_DIR . '/modules/sitelogin.php';
 
-// Ïðîâåðÿåì âîçìîæíîñòü ãîëîñîâàíèÿ
+// ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑŒ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ð°Ð½Ð¸Ñ
 if(!$is_logged) $member_id['user_group'] = 5;
 if(!$user_group[$member_id['user_group']]['allow_rating']) die(":-(");
-// Ïîëó÷àåì IP ïîñåòèòåëÿ
+// ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ IP Ð¿Ð¾ÑÐµÑ‚Ð¸Ñ‚ÐµÐ»Ñ
 $ip = $db->safesql($_SERVER['REMOTE_ADDR']);
 
-// Îïðåäåëÿåì ïåðåìåííûå â çàïðîñ.
+// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ Ð² Ð·Ð°Ð¿Ñ€Ð¾Ñ.
 if($is_logged) {
-	// Åñëè þçåð àâòîðèçîâàí
+	// Ð•ÑÐ»Ð¸ ÑŽÐ·ÐµÑ€ Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð¾Ð²Ð°Ð½
 	$name = $db->safesql($member_id['name']);
 	$where = "user_name = '{$member_id['name']}'";
 } else {
-	// Åñëè íåàâòîðèçîâàí
-	$name = "guest_user";
+	// Ð•ÑÐ»Ð¸ Ð½ÐµÐ°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð¾Ð²Ð°Ð½
+	$name = "";
 	$where = "ip ='{$ip}'";
 }
 
-// Ïðîâåðÿåì ëàéêè ó íîâîñòè
-$id = $db->super_query( "SELECT news_id FROM " . PREFIX . "_easylike_count WHERE news_id = $news_id ");
+// ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð»Ð°Ð¹ÐºÐ¸ Ñƒ Ð½Ð¾Ð²Ð¾ÑÑ‚Ð¸
+$likes = $db->super_query( "SELECT news_id, likes FROM " . PREFIX . "_easylike_count WHERE news_id = $news_id ");
+if (!$likes['likes']) {
+	$likes['likes'] = 0;
+}
 
 if (count(explode('.', $ip)) == 4) {
-	// Åñëè ïîëó÷åí IP ïîñåòèòåëÿ - ðàáîòàåì.
-	if (!$id['news_id']) {
-		// Åñëè çàïèñè î ëàéêàõ íåò - äîáàâèì.
+	// Ð•ÑÐ»Ð¸ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½ IP Ð¿Ð¾ÑÐµÑ‚Ð¸Ñ‚ÐµÐ»Ñ - Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÐ¼.
+	if (!$likes['news_id']) {
+		// Ð•ÑÐ»Ð¸ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð¾ Ð»Ð°Ð¹ÐºÐ°Ñ… Ð½ÐµÑ‚ - Ð´Ð¾Ð±Ð°Ð²Ð¸Ð¼.
 		$db->query("INSERT INTO " . PREFIX . "_easylike_count (news_id, likes) VALUES ($news_id, '1')");
-		$easyLike = setLog($count, $news_id, $name, $ip);
+		$easyLike = setLog($likes['likes'], $news_id, $name, $ip);
 	} else {
-		// Åñëè çàïèñü åñòü, òî ïðîâåðÿåì, íå ëàéêàë ëè ýòîò ïîñåòèòåëü.
+		// Ð•ÑÐ»Ð¸ Ð·Ð°Ð¿Ð¸ÑÑŒ ÐµÑÑ‚ÑŒ, Ñ‚Ð¾ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼, Ð½Ðµ Ð»Ð°Ð¹ÐºÐ°Ð» Ð»Ð¸ ÑÑ‚Ð¾Ñ‚ Ð¿Ð¾ÑÐµÑ‚Ð¸Ñ‚ÐµÐ»ÑŒ.
 		$select = "SELECT news_id FROM " . PREFIX . "_easylike_log WHERE news_id = $news_id AND {$where}";
 		$row = $db->super_query($select);
 
 		if (!$row['news_id']) {
-			// Åñëè íå ëàéêàë - ðàáîòàåì.
+			// Ð•ÑÐ»Ð¸ Ð½Ðµ Ð»Ð°Ð¹ÐºÐ°Ð» - Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÐ¼.
 			$db->query("UPDATE " . PREFIX . "_easylike_count SET likes=likes+1 WHERE news_id ='".$news_id."'");
-			$easyLike = setLog($count, $news_id, $name, $ip);
+			$easyLike = setLog($likes['likes'], $news_id, $name, $ip);
 		} else {
-			// Åñëè ëàéêàë - øë¸ì åìó ïðèâåò :).
+			// Ð•ÑÐ»Ð¸ Ð»Ð°Ð¹ÐºÐ°Ð» - ÑˆÐ»Ñ‘Ð¼ ÐµÐ¼Ñƒ Ð¿Ñ€Ð¸Ð²ÐµÑ‚ :).
 			$easyLike = ':-)';
 		}
 	}
 } else {
-	// Åñëè IP íå ïîëó÷èëè (áûâàåò òàêîå ñ ipv6 :)) - ïîêàçûâàåì ãðóñòíûé ñìàéëèê.
+	// Ð•ÑÐ»Ð¸ IP Ð½Ðµ Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ð»Ð¸ (Ð±Ñ‹Ð²Ð°ÐµÑ‚ Ñ‚Ð°ÐºÐ¾Ðµ Ñ ipv6 :)) - Ð¿Ð¾ÐºÐ°Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ð³Ñ€ÑƒÑÑ‚Ð½Ñ‹Ð¹ ÑÐ¼Ð°Ð¹Ð»Ð¸Ðº.
 	$easyLike = ':-(';
 }
 
@@ -122,22 +125,27 @@ $db->close();
 echo $easyLike;
 
 /**
- * Çàïèñûâàåì äàíûå â ëîã
+ * Ð—Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÐ¼ Ð´Ð°Ð½Ñ‹Ðµ Ð² Ð»Ð¾Ð³
  * @param integer $count
  * @param integer $news_id
  * @param string  $name
  * @param string  $ip
  */
-function setLog($count = 0, $news_id = 1, $name = 'guest_user', $ip = '127.0.0.1') {
+function setLog($count = 0, $news_id = 1, $name = '', $ip = '') {
 	global $config, $db;
 
 	$db->query( "INSERT INTO " . PREFIX . "_easylike_log (news_id, user_name, ip) values ('$news_id', '{$name}', '$ip')" );
-	if (($config['allow_alt_url'] && $config['allow_alt_url'] != 'no') AND !$config['seo_type']) {
-		$cprefix = 'full_';
+	if ($config['version_id'] > 9.4) {
+		if (($config['allow_alt_url'] && $config['allow_alt_url'] != 'no') && !$config['seo_type']) {
+			$cprefix = 'full_';
+		} else {
+			$cprefix = 'full_'.$news_id;
+		}
+		clear_cache(array('news_', 'rss', $cprefix));
 	} else {
-		$cprefix = 'full_'.$news_id;
+		clear_cache();
 	}
-	clear_cache(array('news_', 'rss', $cprefix));
+
 
 	return $count + 1;
 }

@@ -1,9 +1,9 @@
 <?php
 /*
 =============================================================================
-Easy Like - модуль организации системы лайков для DLE
+Easy Like - РјРѕРґСѓР»СЊ РѕСЂРіР°РЅРёР·Р°С†РёРё СЃРёСЃС‚РµРјС‹ Р»Р°Р№РєРѕРІ РґР»СЏ DLE
 =============================================================================
-Автор:   ПафНутиЙ
+РђРІС‚РѕСЂ:   РџР°С„РќСѓС‚РёР™
 URL:     http://pafnuty.name/
 twitter: https://twitter.com/pafnuty_name
 google+: http://gplus.to/pafnuty
@@ -16,36 +16,36 @@ email:   pafnuty10@gmail.com
 @ini_set ( 'html_errors', false );
 @ini_set ( 'error_reporting', E_ALL ^ E_WARNING ^ E_NOTICE );
 
-// Первым делом подключаем DLE_API как это ни странно, но в данном случаи это упрощает жизнь разработчика.
+// РџРµСЂРІС‹Рј РґРµР»РѕРј РїРѕРґРєР»СЋС‡Р°РµРј DLE_API РєР°Рє СЌС‚Рѕ РЅРё СЃС‚СЂР°РЅРЅРѕ, РЅРѕ РІ РґР°РЅРЅРѕРј СЃР»СѓС‡Р°Рё СЌС‚Рѕ СѓРїСЂРѕС‰Р°РµС‚ Р¶РёР·РЅСЊ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєР°.
 include('engine/api/api.class.php');
 
 /**
- * Массив с конфигурацией установщика, ведь удобно иметь одинаковый код для разных установщиков разных модулей.
+ * РњР°СЃСЃРёРІ СЃ РєРѕРЅС„РёРіСѓСЂР°С†РёРµР№ СѓСЃС‚Р°РЅРѕРІС‰РёРєР°, РІРµРґСЊ СѓРґРѕР±РЅРѕ РёРјРµС‚СЊ РѕРґРёРЅР°РєРѕРІС‹Р№ РєРѕРґ РґР»СЏ СЂР°Р·РЅС‹С… СѓСЃС‚Р°РЅРѕРІС‰РёРєРѕРІ СЂР°Р·РЅС‹С… РјРѕРґСѓР»РµР№.
  * @var array
  */
 $cfg = array(
-	// Идентификатор модуля (для внедрения в админпанель и назначение имени иконки с расширением .png)
+	// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РјРѕРґСѓР»СЏ (РґР»СЏ РІРЅРµРґСЂРµРЅРёСЏ РІ Р°РґРјРёРЅРїР°РЅРµР»СЊ Рё РЅР°Р·РЅР°С‡РµРЅРёРµ РёРјРµРЅРё РёРєРѕРЅРєРё СЃ СЂР°СЃС€РёСЂРµРЅРёРµРј .png)
 	'moduleName'    => 'easy_like',
 
-	// Название модуля - показывается как в установщике, так и в админке.
+	// РќР°Р·РІР°РЅРёРµ РјРѕРґСѓР»СЏ - РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РєР°Рє РІ СѓСЃС‚Р°РЅРѕРІС‰РёРєРµ, С‚Р°Рє Рё РІ Р°РґРјРёРЅРєРµ.
 	'moduleTitle'   => 'Easy Like',
 
-	// Описание модуля, для установщика и админки.
-	'moduleDescr'   => 'Модуль для организации лайков на сайте',
+	// РћРїРёСЃР°РЅРёРµ РјРѕРґСѓР»СЏ, РґР»СЏ СѓСЃС‚Р°РЅРѕРІС‰РёРєР° Рё Р°РґРјРёРЅРєРё.
+	'moduleDescr'   => 'РњРѕРґСѓР»СЊ РґР»СЏ РѕСЂРіР°РЅРёР·Р°С†РёРё Р»Р°Р№РєРѕРІ РЅР° СЃР°Р№С‚Рµ',
 
-	// Версия модуля, для установщика
-	'moduleVersion' => '1.0',
+	// Р’РµСЂСЃРёСЏ РјРѕРґСѓР»СЏ, РґР»СЏ СѓСЃС‚Р°РЅРѕРІС‰РёРєР°
+	'moduleVersion' => '1.1',
 
-	// Дата выпуска модуля, для установщика
+	// Р”Р°С‚Р° РІС‹РїСѓСЃРєР° РјРѕРґСѓР»СЏ, РґР»СЏ СѓСЃС‚Р°РЅРѕРІС‰РёРєР°
 	'moduleDate'    => '03.05.2014',
 
-	// Версии DLE, поддержваемые модулем, для установщика
+	// Р’РµСЂСЃРёРё DLE, РїРѕРґРґРµСЂР¶РІР°РµРјС‹Рµ РјРѕРґСѓР»РµРј, РґР»СЏ СѓСЃС‚Р°РЅРѕРІС‰РёРєР°
 	'dleVersion'    => '9.x - 10.x',
 
-	// ID групп, для которых доступно управление модулем в админке.
+	// ID РіСЂСѓРїРї, РґР»СЏ РєРѕС‚РѕСЂС‹С… РґРѕСЃС‚СѓРїРЅРѕ СѓРїСЂР°РІР»РµРЅРёРµ РјРѕРґСѓР»РµРј РІ Р°РґРјРёРЅРєРµ.
 	'allowGroups'   => '1',
 
-	// Массив с запросами, которые будут выполняться при установке
+	// РњР°СЃСЃРёРІ СЃ Р·Р°РїСЂРѕСЃР°РјРё, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РІС‹РїРѕР»РЅСЏС‚СЊСЃСЏ РїСЂРё СѓСЃС‚Р°РЅРѕРІРєРµ
 	'queries'       => array(
 		"DROP TABLE IF EXISTS " . PREFIX . "_easylike_count",
 		"DROP TABLE IF EXISTS " . PREFIX . "_easylike_log",
@@ -65,20 +65,20 @@ $cfg = array(
 			) ENGINE=MyISAM /*!40101 DEFAULT CHARACTER SET " . COLLATE . " COLLATE " . COLLATE . "_general_ci */",
 	),
 
-	// Устанавливать админку (true/false). Включает показ кнопки установки и удаления админки.
+	// РЈСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊ Р°РґРјРёРЅРєСѓ (true/false). Р’РєР»СЋС‡Р°РµС‚ РїРѕРєР°Р· РєРЅРѕРїРєРё СѓСЃС‚Р°РЅРѕРІРєРё Рё СѓРґР°Р»РµРЅРёСЏ Р°РґРјРёРЅРєРё.
 	'installAdmin'  => false,
 
-	// Отображать шаги установки модуля
+	// РћС‚РѕР±СЂР°Р¶Р°С‚СЊ С€Р°РіРё СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґСѓР»СЏ
 	'steps'         => true
 
 );
 
-// Определяем кодировку.
+// РћРїСЂРµРґРµР»СЏРµРј РєРѕРґРёСЂРѕРІРєСѓ.
 $fileCharset = chasetConflict($cfg);
 
-// Шаги установки модуля
+// РЁР°РіРё СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґСѓР»СЏ
 if ($config['version_id'] >= 9.6) {
-	$jsInsert = "// Модуль Easy Like by ПафНутиЙ
+	$jsInsert = "// РњРѕРґСѓР»СЊ Easy Like by РџР°С„РќСѓС‚РёР™
 $(document).on('click touchstart', '.easylike_count', function (event) {
 	event.preventDefault();
 	var \$this = $(this),
@@ -88,71 +88,81 @@ $(document).on('click touchstart', '.easylike_count', function (event) {
 		id: id,
 		count: count
 	}, function (data) {
+		if (data > count + 1) {
+			// Р•СЃР»Рё РІРґСЂСѓРі Р·Р°РїРёСЃСЊ Р»Р°Р№РєРЅРµС‚ РєС‚Рѕ-С‚Рѕ РµС‰С‘ РїРѕРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃРјРѕС‚СЂРёС‚ СЃС‚СЂР°РЅРёС†Сѓ - СЃРєР°Р¶РµРј РµРјСѓ РѕР± СЌС‚РѕРј, РїСѓСЃС‚СЊ Р·РЅР°РµС‚.
+			data = (data) + '<span title=\"РџРѕРєР° РІС‹ СЃРјРѕС‚СЂРµР»Рё СЃС‚СЂР°РЅРёС†Сѓ, Р·Р°РїРёСЃСЊ РїРѕРЅСЂР°РІРёР»Р°СЃСЊ РµС‰С‘ РєРѕРјСѓ-С‚Рѕ.\">(' + (data - count - 1) + ')</span>';
+		};
 		\$this.html(data);
 	});
 });";
 } else {
-	$jsInsert = "// Модуль Easy Like by ПафНутиЙ
+	$jsInsert = "// РњРѕРґСѓР»СЊ Easy Like by РџР°С„РќСѓС‚РёР™
 jQuery(document).ready(function($) {
-    $('.easylike_count').click(function (event) {
-        event.preventDefault();
-        var \$this = $(this),
-            id = \$this.data('id') * 1,
-            count = \$this.data('count') * 1;
-        $.post(dle_root + \"engine/ajax/easylike.php\", {
-            id: id,
-            count: count
-        }, function (data) {
-            \$this.html(data);
-        });
-    });
+	$('.easylike_count').click(function (event) {
+		event.preventDefault();
+		var \$this = $(this),
+			id = \$this.data('id') * 1,
+			count = \$this.data('count') * 1;
+		$.post(dle_root + \"engine/ajax/easylike.php\", {
+			id: id,
+			count: count
+		}, function (data) {
+			if (data > count + 1) {
+			// Р•СЃР»Рё РІРґСЂСѓРі Р·Р°РїРёСЃСЊ Р»Р°Р№РєРЅРµС‚ РєС‚Рѕ-С‚Рѕ РµС‰С‘ РїРѕРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃРјРѕС‚СЂРёС‚ СЃС‚СЂР°РЅРёС†Сѓ - СЃРєР°Р¶РµРј РµРјСѓ РѕР± СЌС‚РѕРј, РїСѓСЃС‚СЊ Р·РЅР°РµС‚.
+			data = (data) + '<span title=\"РџРѕРєР° РІС‹ СЃРјРѕС‚СЂРµР»Рё СЃС‚СЂР°РЅРёС†Сѓ, Р·Р°РїРёСЃСЊ РїРѕРЅСЂР°РІРёР»Р°СЃСЊ РµС‰С‘ РєРѕРјСѓ-С‚Рѕ.\">(' + (data - count - 1) + ')</span>';
+		};
+		\$this.html(data);
+		});
+	});
 });";
 }
 
 $steps = <<<HTML
 <div class="descr">
-	<h2>Установка модуля</h2>
+	<h2>РЈСЃС‚Р°РЅРѕРІРєР° РјРѕРґСѓР»СЏ</h2>
 	<ol>
-		<li><b class="red">Сделать бэкап БД!</b></li>
+		<li><b class="red">РЎРґРµР»Р°С‚СЊ Р±СЌРєР°Рї Р‘Р”!</b></li>
 		<li>
-			<p>Открыть шаблон краткой и полной новости, в нужное место вставить строку подключения модуля:</p>
+			<p>РћС‚РєСЂС‹С‚СЊ С€Р°Р±Р»РѕРЅ РєСЂР°С‚РєРѕР№ Рё РїРѕР»РЅРѕР№ РЅРѕРІРѕСЃС‚Рё, РІ РЅСѓР¶РЅРѕРµ РјРµСЃС‚Рѕ РІСЃС‚Р°РІРёС‚СЊ СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РјРѕРґСѓР»СЏ:</p>
 			<textarea readonly>{include file="engine/modules/easylike/easylike.php?news_id={news-id}"}</textarea>
-			<small>Можно вставлять строку подключения в любое место, в любой шаблон, а не только шаблон новостей, <br>но главное условие &mdash; передача данных об ID новости. Например можно вставить такую строку подключения в шаблон main.tpl: <br> <code>{include file="engine/modules/easylike/easylike.php?news_id=4"}</code><br>В этом случаи будет показано количество лайков новости с ID=4 (и можно будет лайкать эту новость с любой страницы сайта)</small>
+			<small>РњРѕР¶РЅРѕ РІСЃС‚Р°РІР»СЏС‚СЊ СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РІ Р»СЋР±РѕРµ РјРµСЃС‚Рѕ, РІ Р»СЋР±РѕР№ С€Р°Р±Р»РѕРЅ, Р° РЅРµ С‚РѕР»СЊРєРѕ С€Р°Р±Р»РѕРЅ РЅРѕРІРѕСЃС‚РµР№, <br>РЅРѕ РіР»Р°РІРЅРѕРµ СѓСЃР»РѕРІРёРµ &mdash; РїРµСЂРµРґР°С‡Р° РґР°РЅРЅС‹С… РѕР± ID РЅРѕРІРѕСЃС‚Рё. РќР°РїСЂРёРјРµСЂ РјРѕР¶РЅРѕ РІСЃС‚Р°РІРёС‚СЊ С‚Р°РєСѓСЋ СЃС‚СЂРѕРєСѓ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РІ С€Р°Р±Р»РѕРЅ main.tpl: <br> <code>{include file="engine/modules/easylike/easylike.php?news_id=4"}</code><br>Р’ СЌС‚РѕРј СЃР»СѓС‡Р°Рё Р±СѓРґРµС‚ РїРѕРєР°Р·Р°РЅРѕ РєРѕР»РёС‡РµСЃС‚РІРѕ Р»Р°Р№РєРѕРІ РЅРѕРІРѕСЃС‚Рё СЃ ID=4 (Рё РјРѕР¶РЅРѕ Р±СѓРґРµС‚ Р»Р°Р№РєР°С‚СЊ СЌС‚Сѓ РЅРѕРІРѕСЃС‚СЊ СЃ Р»СЋР±РѕР№ СЃС‚СЂР°РЅРёС†С‹ СЃР°Р№С‚Р°)</small>
 		</li>
 		<li>
-			<p>Открыть любой js-файл, подключенный к шаблону и в самый конец добавить:</p>
+			<p>РћС‚РєСЂС‹С‚СЊ Р»СЋР±РѕР№ js-С„Р°Р№Р», РїРѕРґРєР»СЋС‡РµРЅРЅС‹Р№ Рє С€Р°Р±Р»РѕРЅСѓ Рё РІ СЃР°РјС‹Р№ РєРѕРЅРµС† РґРѕР±Р°РІРёС‚СЊ:</p>
 			<textarea readonly>{$jsInsert}</textarea>
 		</li>
 		<li>
-			<p>Открыть любой CSS-файл, подключенный к шаблону и в самый конец прописать:
-				    		<br><b class="red">Внимание!</b> Это дефолтные стили для модуля, вы можете менять их как угодно под свой сайт.</p>
+			<p>РћС‚РєСЂС‹С‚СЊ Р»СЋР±РѕР№ CSS-С„Р°Р№Р», РїРѕРґРєР»СЋС‡РµРЅРЅС‹Р№ Рє С€Р°Р±Р»РѕРЅСѓ Рё РІ СЃР°РјС‹Р№ РєРѕРЅРµС† РїСЂРѕРїРёСЃР°С‚СЊ:
+			<br><b class="red">Р’РЅРёРјР°РЅРёРµ!</b> Р­С‚Рѕ РґРµС„РѕР»С‚РЅС‹Рµ СЃС‚РёР»Рё РґР»СЏ РјРѕРґСѓР»СЏ, РІС‹ РјРѕР¶РµС‚Рµ РјРµРЅСЏС‚СЊ РёС… РєР°Рє СѓРіРѕРґРЅРѕ РїРѕРґ СЃРІРѕР№ СЃР°Р№С‚.</p>
+			<p>РљРЅРѕРїРєР° Р±СѓРґРµС‚ РІС‹РіР»СЏРґРµС‚СЊ РІРѕС‚ С‚Р°Рє: <span class="easylike_count">15</span></p>
 
 			<textarea readonly>/* ==========================================================================
-   Модуль Easy Like by ПафНутиЙ */
+   РњРѕРґСѓР»СЊ Easy Like by РџР°С„РќСѓС‚РёР™ */
 /* ========================================================================== */
 
-    .easylike_count {
-        display: inline-block;
-        color: #e74c3c;
-        cursor: pointer;
-        font: normal 16px/16px Arial, Tahome, sans-serif;
-        background: #2c3e50 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABaElEQVR42qXUS0uUUQDH4XGcoiYpDBoogqg2AVWUm65QRAgVELRr08qIoAgICpRaRgS1lCAKShjcCd4QHXHjFxDxBqooIKgiOIqKKj4HGBiGGdR5f/AcOJs/Z3UqZp/eje3RRTJUUc8vShZnrz6Q5RONXIsymOIlX/jNMPejDNYzRQuhJaooWYJSXeENz9ghdIpsOS9M0kQr7YQqOcvMQV9YSZpqXpHrKkmWuUB+82SLDR7nD3d4wAK5agj1UNgWP/iYG7zJPd6xwm3GyO8vvRTrOmk6w+BDuhmhkZ+sUdg2ExRrihVOh8EXdPKEcrtFNRXxcKGLKPXzna9h8ByTRG2OQwlHklWiVMM36uKORU4SpUE2mQ2DI1ym3I7SQILxMNjFY8rtLQ28ZiyspvlMM5OMkmGa/dRHqINY7seu4xFnOE+Kf2RYZp38jpDiBs8ZoDZ/sLBa3nOJExzjMKENVpljiDb+s0VsF/laUSDICzycAAAAAElFTkSuQmCC') no-repeat 8px 50%;
-        padding: 6px 10px 6px 40px;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        -webkit-transition: all ease .5s;
-        -moz-transition: all ease .5s;
-        -ms-transition: all ease .5s;
-        -o-transition: all ease .5s;
-        transition: all ease .5s;
-    }
-    .easylike_count:hover {
-        color: #fff;
-        background: rgba(44, 62, 80, .7) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABZElEQVR42qXTP29NcRzH8W9vS9wSUknvwCDUYFCCRGqwEDoYwFSjXCSGMhnQB8ATsDN0kcYgMfUBsIELibQMbVJF0n8h5V6vX3JvcodzWu55J68zfvPJyTmlRqMR6xhgmnmuEWtJj/U84DVV6hwscrDCChcI3nKDyFOKtbvDNE9I/WALufWQ1yDXOUedVD+L5JY3vZeXTBBN3SxznsiRubCbcfq4SqsD9LLAHtr7ymLWwq08Zp5Bok2VvFa5R3Slh4Y4zihLnOVjxvJdZHWIcU6HgyepU+M2ZeI/lfjOSHqHl3jGGTrtGH10RXPZKFHQfT6Xmu9liqLNsSEa0gmigCP84XJa+I3tFOkNq8ymg+/ZT6eVuUsPn9LcMV4QHbpFqtr6sPe6/I4JpvjAJF/4l47ynJ3MtP6UK5xiB7up8JBJFvhJe5uocJiLvGIYCx3MaJib7GMbm9lI6hfLzFHjKY/4TfwFLOFzQdqSgkUAAAAASUVORK5CYII=') no-repeat 8px 50%;
-    }</textarea>
+	.easylike_count {
+		display: inline-block;
+		color: #e74c3c;
+		cursor: pointer;
+		font: normal 16px/16px Arial, Tahome, sans-serif;
+		background: #2c3e50 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABaElEQVR42qXUS0uUUQDH4XGcoiYpDBoogqg2AVWUm65QRAgVELRr08qIoAgICpRaRgS1lCAKShjcCd4QHXHjFxDxBqooIKgiOIqKKj4HGBiGGdR5f/AcOJs/Z3UqZp/eje3RRTJUUc8vShZnrz6Q5RONXIsymOIlX/jNMPejDNYzRQuhJaooWYJSXeENz9ghdIpsOS9M0kQr7YQqOcvMQV9YSZpqXpHrKkmWuUB+82SLDR7nD3d4wAK5agj1UNgWP/iYG7zJPd6xwm3GyO8vvRTrOmk6w+BDuhmhkZ+sUdg2ExRrihVOh8EXdPKEcrtFNRXxcKGLKPXzna9h8ByTRG2OQwlHklWiVMM36uKORU4SpUE2mQ2DI1ym3I7SQILxMNjFY8rtLQ28ZiyspvlMM5OMkmGa/dRHqINY7seu4xFnOE+Kf2RYZp38jpDiBs8ZoDZ/sLBa3nOJExzjMKENVpljiDb+s0VsF/laUSDICzycAAAAAElFTkSuQmCC') no-repeat 8px 50%;
+		padding: 6px 10px 6px 35px;
+		text-shadow: none;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		-webkit-transition: all ease .5s;
+		-moz-transition: all ease .5s;
+		-ms-transition: all ease .5s;
+		-o-transition: all ease .5s;
+		transition: all ease .5s;
+	}
+	.easylike_count:hover {
+		color: #fff;
+		background: rgba(44, 62, 80, .7) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABZElEQVR42qXTP29NcRzH8W9vS9wSUknvwCDUYFCCRGqwEDoYwFSjXCSGMhnQB8ATsDN0kcYgMfUBsIELibQMbVJF0n8h5V6vX3JvcodzWu55J68zfvPJyTmlRqMR6xhgmnmuEWtJj/U84DVV6hwscrDCChcI3nKDyFOKtbvDNE9I/WALufWQ1yDXOUedVD+L5JY3vZeXTBBN3SxznsiRubCbcfq4SqsD9LLAHtr7ymLWwq08Zp5Bok2VvFa5R3Slh4Y4zihLnOVjxvJdZHWIcU6HgyepU+M2ZeI/lfjOSHqHl3jGGTrtGH10RXPZKFHQfT6Xmu9liqLNsSEa0gmigCP84XJa+I3tFOkNq8ymg+/ZT6eVuUsPn9LcMV4QHbpFqtr6sPe6/I4JpvjAJF/4l47ynJ3MtP6UK5xiB7up8JBJFvhJe5uocJiLvGIYCx3MaJib7GMbm9lI6hfLzFHjKY/4TfwFLOFzQdqSgkUAAAAASUVORK5CYII=') no-repeat 8px 50%;
+	}</textarea>
 		</li>
-		<li>Выполнить установку БД модуля (кнопка ниже).</li>
+		<li>Р’С‹РїРѕР»РЅРёС‚СЊ СѓСЃС‚Р°РЅРѕРІРєСѓ Р‘Р” РјРѕРґСѓР»СЏ (РєРЅРѕРїРєР° РЅРёР¶Рµ).</li>
 	</ol>
 </div>
 HTML;
@@ -178,72 +188,72 @@ function installer() {
 
 	}
 
-	// Если через $_POST передаётся параметр install, производим инсталляцию, согласно параметрам
+	// Р•СЃР»Рё С‡РµСЂРµР· $_POST РїРµСЂРµРґР°С‘С‚СЃСЏ РїР°СЂР°РјРµС‚СЂ install, РїСЂРѕРёР·РІРѕРґРёРј РёРЅСЃС‚Р°Р»Р»СЏС†РёСЋ, СЃРѕРіР»Р°СЃРЅРѕ РїР°СЂР°РјРµС‚СЂР°Рј
 	if (!empty($_POST['install'])) {
-		// Выводим результаты  установки модуля
+		// Р’С‹РІРѕРґРёРј СЂРµР·СѓР»СЊС‚Р°С‚С‹  СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґСѓР»СЏ
 		$output .= '<div class="descr"><ul>';
 
 		if ($queries) {
-			// Выполняем запросы из массива.
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃС‹ РёР· РјР°СЃСЃРёРІР°.
 			foreach ($cfg['queries'] as $q) {
 				$query[] = $dle_api->db->query($q);
 			}
 
-			$output .= '<li><b>Запросы выполнены!</b></li>';
+			$output .= '<li><b>Р—Р°РїСЂРѕСЃС‹ РІС‹РїРѕР»РЅРµРЅС‹!</b></li>';
 		}
 
-		// Установка админки (http://dle-news.ru/extras/online/include_admin.html)
+		// РЈСЃС‚Р°РЅРѕРІРєР° Р°РґРјРёРЅРєРё (http://dle-news.ru/extras/online/include_admin.html)
 		if ($cfg['installAdmin']) {
 
 			$install_admin = $dle_api->install_admin_module($cfg['moduleName'], $cfg['moduleTitle'], $cfg['moduleDescr'], $cfg['moduleName'] . '.png', $cfg['allowGroups']);
 
 			if ($install_admin) {
-				$output .= '<li><b>Админчасть модуля установлена</b></li>';
+				$output .= '<li><b>РђРґРјРёРЅС‡Р°СЃС‚СЊ РјРѕРґСѓР»СЏ СѓСЃС‚Р°РЅРѕРІР»РµРЅР°</b></li>';
 			}
 		}
 
-		$output .= '<li><b>Установка завершена!</b></li></ul></div>';
-		$output .= '<div class="alert">Не забудьте удалить файл установщика!</div>';
+		$output .= '<li><b>РЈСЃС‚Р°РЅРѕРІРєР° Р·Р°РІРµСЂС€РµРЅР°!</b></li></ul></div>';
+		$output .= '<div class="alert">РќРµ Р·Р°Р±СѓРґСЊС‚Рµ СѓРґР°Р»РёС‚СЊ С„Р°Р№Р» СѓСЃС‚Р°РЅРѕРІС‰РёРєР°!</div>';
 		if ($cfg['installAdmin'] && $install_admin) {
-			$output .= '<p><a class="btn" href="/' . $config['admin_path'] . '?mod=' . $cfg['moduleName'] . '" target="_blank" title="Перейти к управлению модулем">Настройка модуля</a></p> <hr>';
+			$output .= '<p><a class="btn" href="/' . $config['admin_path'] . '?mod=' . $cfg['moduleName'] . '" target="_blank" title="РџРµСЂРµР№С‚Рё Рє СѓРїСЂР°РІР»РµРЅРёСЋ РјРѕРґСѓР»РµРј">РќР°СЃС‚СЂРѕР№РєР° РјРѕРґСѓР»СЏ</a></p> <hr>';
 		}
 
 	}
 
-	// Если через $_POST передаётся параметр remove, производим удаление админчасти модуля
+	// Р•СЃР»Рё С‡РµСЂРµР· $_POST РїРµСЂРµРґР°С‘С‚СЃСЏ РїР°СЂР°РјРµС‚СЂ remove, РїСЂРѕРёР·РІРѕРґРёРј СѓРґР°Р»РµРЅРёРµ Р°РґРјРёРЅС‡Р°СЃС‚Рё РјРѕРґСѓР»СЏ
 	elseif (!empty($_POST['remove'])) {
 		$remove_admin = $dle_api->uninstall_admin_module($cfg['moduleName']);
-		$output .= '<div class="descr"><p><b>Админчасть модуля удалена</b></p></div>';
-		$output .= '<div class="alert">Не забудьте удалить файл установщика!</div>';
+		$output .= '<div class="descr"><p><b>РђРґРјРёРЅС‡Р°СЃС‚СЊ РјРѕРґСѓР»СЏ СѓРґР°Р»РµРЅР°</b></p></div>';
+		$output .= '<div class="alert">РќРµ Р·Р°Р±СѓРґСЊС‚Рµ СѓРґР°Р»РёС‚СЊ С„Р°Р№Р» СѓСЃС‚Р°РЅРѕРІС‰РёРєР°!</div>';
 	}
 
-	// Если через $_POST ничего не передаётся, выводим форму для установки модуля
+	// Р•СЃР»Рё С‡РµСЂРµР· $_POST РЅРёС‡РµРіРѕ РЅРµ РїРµСЂРµРґР°С‘С‚СЃСЏ, РІС‹РІРѕРґРёРј С„РѕСЂРјСѓ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґСѓР»СЏ
 	else {
-		// Выводим кнопку удаления  модуля
+		// Р’С‹РІРѕРґРёРј РєРЅРѕРїРєСѓ СѓРґР°Р»РµРЅРёСЏ  РјРѕРґСѓР»СЏ
 		if ($cfg['installAdmin'] && $adminInstalled) {
 			$uninstallForm = <<<HTML
 			<hr>
 			<div class="form-field clearfix">
-				<div class="lebel red">Удаление админчасти модуля</div>
+				<div class="lebel red">РЈРґР°Р»РµРЅРёРµ Р°РґРјРёРЅС‡Р°СЃС‚Рё РјРѕРґСѓР»СЏ</div>
 				<div class="control">
 					<form method="POST">
 						<input type="hidden" name="remove" value="1">
-						<button class="btn active" type="submit">Удалить админчасть модуля</button>
+						<button class="btn active" type="submit">РЈРґР°Р»РёС‚СЊ Р°РґРјРёРЅС‡Р°СЃС‚СЊ РјРѕРґСѓР»СЏ</button>
 					</form>
 				</div>
 			</div>
 HTML;
 		}
-		// Выводим кнопку установки модуля с допзпросами
+		// Р’С‹РІРѕРґРёРј РєРЅРѕРїРєСѓ СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґСѓР»СЏ СЃ РґРѕРїР·РїСЂРѕСЃР°РјРё
 		if ($queries) {
 			$installForm = <<<HTML
 			<div class="form-field clearfix">
-				<div class="lebel">Установка модуля</div>
+				<div class="lebel">РЈСЃС‚Р°РЅРѕРІРєР° РјРѕРґСѓР»СЏ</div>
 				<div class="control">
 					<form method="POST">
 						<input type="hidden" name="install" value="1">
-						<button class="btn" type="submit">Установить модуль</button>
-						<span id="wtq" class="btn">Какие запросы будут выполнены?</span>
+						<button class="btn" type="submit">РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РјРѕРґСѓР»СЊ</button>
+						<span id="wtq" class="btn">РљР°РєРёРµ Р·Р°РїСЂРѕСЃС‹ Р±СѓРґСѓС‚ РІС‹РїРѕР»РЅРµРЅС‹?</span>
 					</form>
 				</div>
 			</div>
@@ -252,16 +262,16 @@ HTML;
 			</div>
 HTML;
 		}
-		// Выводим кнопку установки админчасти модуля
+		// Р’С‹РІРѕРґРёРј РєРЅРѕРїРєСѓ СѓСЃС‚Р°РЅРѕРІРєРё Р°РґРјРёРЅС‡Р°СЃС‚Рё РјРѕРґСѓР»СЏ
 		else {
 			if (!$adminInstalled) {
 				$installForm = <<<HTML
 				<div class="form-field clearfix">
-					<div class="lebel">Установка админчасти</div>
+					<div class="lebel">РЈСЃС‚Р°РЅРѕРІРєР° Р°РґРјРёРЅС‡Р°СЃС‚Рё</div>
 					<div class="control">
 						<form method="POST">
 							<input type="hidden" name="install" value="1">
-							<button class="btn" type="submit">Установить админчасть модуля</button>
+							<button class="btn" type="submit">РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р°РґРјРёРЅС‡Р°СЃС‚СЊ РјРѕРґСѓР»СЏ</button>
 						</form>
 					</div>
 				</div>
@@ -269,14 +279,14 @@ HTML;
 			}
 		}
 
-		// Вывод
+		// Р’С‹РІРѕРґ
 		if ($cfg['steps']) {
 			$output .= $steps;
 		}
 		$output .= <<<HTML
-			<p class="alert">Перед установкой модуля обязательно <a href="/{$config['admin_path']}?mod=dboption" target="_blank" title="Открыть инструменты работы с БД DLE в новом окне">сделайте бэкап БД</a>!</p>
+			<p class="alert">РџРµСЂРµРґ СѓСЃС‚Р°РЅРѕРІРєРѕР№ РјРѕРґСѓР»СЏ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ <a href="/{$config['admin_path']}?mod=dboption" target="_blank" title="РћС‚РєСЂС‹С‚СЊ РёРЅСЃС‚СЂСѓРјРµРЅС‚С‹ СЂР°Р±РѕС‚С‹ СЃ Р‘Р” DLE РІ РЅРѕРІРѕРј РѕРєРЅРµ">СЃРґРµР»Р°Р№С‚Рµ Р±СЌРєР°Рї Р‘Р”</a>!</p>
 			<div class="descr">
-				<h2>Выполнение запросов в БД</h2>
+				<h2>Р’С‹РїРѕР»РЅРµРЅРёРµ Р·Р°РїСЂРѕСЃРѕРІ РІ Р‘Р”</h2>
 
 				$installForm
 				$uninstallForm
@@ -286,20 +296,20 @@ HTML;
 
 	}
 
-	// Если руки пользователя кривые, или он просто забыл перекодировать файлы - скажем ему об этом.
+	// Р•СЃР»Рё СЂСѓРєРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РєСЂРёРІС‹Рµ, РёР»Рё РѕРЅ РїСЂРѕСЃС‚Рѕ Р·Р°Р±С‹Р» РїРµСЂРµРєРѕРґРёСЂРѕРІР°С‚СЊ С„Р°Р№Р»С‹ - СЃРєР°Р¶РµРј РµРјСѓ РѕР± СЌС‚РѕРј.
 	if ($fileCharset['conflict']) {
-		$output = '<h2 class="red ta-center">Ошибка!</h2><p class="alert">Кодировка файла установщика (<b>' . $fileCharset['charset'] . '</b>) не совпадает с кодировкой сайта (<b>' . $config['charset'] . '</b>). <br />Установка не возможна. <br />Перекодируйте все php файлы модуля и запустите установщик ещё раз.</p> <hr />';
+		$output = '<h2 class="red ta-center">РћС€РёР±РєР°!</h2><p class="alert">РљРѕРґРёСЂРѕРІРєР° С„Р°Р№Р»Р° СѓСЃС‚Р°РЅРѕРІС‰РёРєР° (<b>' . $fileCharset['charset'] . '</b>) РЅРµ СЃРѕРІРїР°РґР°РµС‚ СЃ РєРѕРґРёСЂРѕРІРєРѕР№ СЃР°Р№С‚Р° (<b>' . $config['charset'] . '</b>). <br />РЈСЃС‚Р°РЅРѕРІРєР° РЅРµ РІРѕР·РјРѕР¶РЅР°. <br />РџРµСЂРµРєРѕРґРёСЂСѓР№С‚Рµ РІСЃРµ php С„Р°Р№Р»С‹ РјРѕРґСѓР»СЏ Рё Р·Р°РїСѓСЃС‚РёС‚Рµ СѓСЃС‚Р°РЅРѕРІС‰РёРє РµС‰С‘ СЂР°Р·.</p> <hr />';
 	}
 
-	// Функция возвращает то, что должно быть выведено
+	// Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ С‚Рѕ, С‡С‚Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РІС‹РІРµРґРµРЅРѕ
 	return $output;
 }
 
 /**
- * Отлавливаем данные о кодировке файла (utf-8 или windows-1251);
- * @param  string $string - строка (или массив), в которой требуется определить кодировку.
+ * РћС‚Р»Р°РІР»РёРІР°РµРј РґР°РЅРЅС‹Рµ Рѕ РєРѕРґРёСЂРѕРІРєРµ С„Р°Р№Р»Р° (utf-8 РёР»Рё windows-1251);
+ * @param  string $string - СЃС‚СЂРѕРєР° (РёР»Рё РјР°СЃСЃРёРІ), РІ РєРѕС‚РѕСЂРѕР№ С‚СЂРµР±СѓРµС‚СЃСЏ РѕРїСЂРµРґРµР»РёС‚СЊ РєРѕРґРёСЂРѕРІРєСѓ.
  *
- * @return array          - возвращает массив с определением конфликта кодировки строки и сайта, а так же сму кодировку строки.
+ * @return array          - РІРѕР·РІСЂР°С‰Р°РµС‚ РјР°СЃСЃРёРІ СЃ РѕРїСЂРµРґРµР»РµРЅРёРµРј РєРѕРЅС„Р»РёРєС‚Р° РєРѕРґРёСЂРѕРІРєРё СЃС‚СЂРѕРєРё Рё СЃР°Р№С‚Р°, Р° С‚Р°Рє Р¶Рµ СЃРјСѓ РєРѕРґРёСЂРѕРІРєСѓ СЃС‚СЂРѕРєРё.
  */
 function chasetConflict($string) {
 	global $config;
@@ -336,7 +346,7 @@ function chasetConflict($string) {
 	<meta name="viewport" content="width=device-width">
 	<link href="http://fonts.googleapis.com/css?family=Ubuntu+Condensed&subset=latin,cyrillic" rel="stylesheet">
 	<style>
-		/*Общие стили*/
+		/*РћР±С‰РёРµ СЃС‚РёР»Рё*/
 		html{background: #bdc3c7 url('data:image/png;base64,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') repeat;}
 		body{width: 960px;padding: 20px;margin: 20px auto;font:normal 14px/18px Arial, Helvetica, sans-serif;background: #f1f1f1;box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);color: #34495e;}
 		::-moz-selection {background: #34495e;color: #f1f1f1;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);}
@@ -392,16 +402,41 @@ function chasetConflict($string) {
 			padding-right: 20px;
 			float: left;
 		}
+		/* ==========================================================================
+		   РњРѕРґСѓР»СЊ Easy Like by РџР°С„РќСѓС‚РёР™ */
+		/* ========================================================================== */
+
+			.easylike_count {
+				display: inline-block;
+				color: #e74c3c;
+				cursor: pointer;
+				font: normal 16px/16px Arial, Tahome, sans-serif;
+				background: #2c3e50 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABaElEQVR42qXUS0uUUQDH4XGcoiYpDBoogqg2AVWUm65QRAgVELRr08qIoAgICpRaRgS1lCAKShjcCd4QHXHjFxDxBqooIKgiOIqKKj4HGBiGGdR5f/AcOJs/Z3UqZp/eje3RRTJUUc8vShZnrz6Q5RONXIsymOIlX/jNMPejDNYzRQuhJaooWYJSXeENz9ghdIpsOS9M0kQr7YQqOcvMQV9YSZpqXpHrKkmWuUB+82SLDR7nD3d4wAK5agj1UNgWP/iYG7zJPd6xwm3GyO8vvRTrOmk6w+BDuhmhkZ+sUdg2ExRrihVOh8EXdPKEcrtFNRXxcKGLKPXzna9h8ByTRG2OQwlHklWiVMM36uKORU4SpUE2mQ2DI1ym3I7SQILxMNjFY8rtLQ28ZiyspvlMM5OMkmGa/dRHqINY7seu4xFnOE+Kf2RYZp38jpDiBs8ZoDZ/sLBa3nOJExzjMKENVpljiDb+s0VsF/laUSDICzycAAAAAElFTkSuQmCC') no-repeat 8px 50%;
+				padding: 6px 10px 6px 35px;
+				text-shadow: none;
+				-webkit-border-radius: 3px;
+				-moz-border-radius: 3px;
+				border-radius: 3px;
+				-webkit-transition: all ease .5s;
+				-moz-transition: all ease .5s;
+				-ms-transition: all ease .5s;
+				-o-transition: all ease .5s;
+				transition: all ease .5s;
+			}
+			.easylike_count:hover {
+				color: #fff;
+				background: rgba(44, 62, 80, .7) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABZElEQVR42qXTP29NcRzH8W9vS9wSUknvwCDUYFCCRGqwEDoYwFSjXCSGMhnQB8ATsDN0kcYgMfUBsIELibQMbVJF0n8h5V6vX3JvcodzWu55J68zfvPJyTmlRqMR6xhgmnmuEWtJj/U84DVV6hwscrDCChcI3nKDyFOKtbvDNE9I/WALufWQ1yDXOUedVD+L5JY3vZeXTBBN3SxznsiRubCbcfq4SqsD9LLAHtr7ymLWwq08Zp5Bok2VvFa5R3Slh4Y4zihLnOVjxvJdZHWIcU6HgyepU+M2ZeI/lfjOSHqHl3jGGTrtGH10RXPZKFHQfT6Xmu9liqLNsSEa0gmigCP84XJa+I3tFOkNq8ymg+/ZT6eVuUsPn9LcMV4QHbpFqtr6sPe6/I4JpvjAJF/4l47ynJ3MtP6UK5xiB7up8JBJFvhJe5uocJiLvGIYCx3MaJib7GMbm9lI6hfLzFHjKY/4TfwFLOFzQdqSgkUAAAAASUVORK5CYII=') no-repeat 8px 50%;
+			}
 	</style>
 </head>
 <body>
 	<header>
-		<h1 class="ta-center"><big class="red"><?=$cfg['moduleTitle']?></big> v.<?=$cfg['moduleVersion']?> от <?=$cfg['moduleDate']?></h1>
+		<h1 class="ta-center"><big class="red"><?=$cfg['moduleTitle']?></big> v.<?=$cfg['moduleVersion']?> РѕС‚ <?=$cfg['moduleDate']?></h1>
 		<hr>
 	</header>
 	<section>
 
-		<h2 class="gray ta-center">Мастер установки модуля <?=$cfg['moduleTitle']?> для DLE <?=$cfg['dleVersion']?></h2>
+		<h2 class="gray ta-center">РњР°СЃС‚РµСЂ СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґСѓР»СЏ <?=$cfg['moduleTitle']?> РґР»СЏ DLE <?=$cfg['dleVersion']?></h2>
 
 		<?php
 			$output = installer();
@@ -411,11 +446,11 @@ function chasetConflict($string) {
 	</section>
 	<div>
 		<hr>
-		Информация об авторе: <br>
-		<a href="http://pafnuty.name/" target="_blank" title="Сайт автора">ПафНутиЙ</a> <br>
+		РРЅС„РѕСЂРјР°С†РёСЏ РѕР± Р°РІС‚РѕСЂРµ: <br>
+		<a href="http://pafnuty.name/" target="_blank" title="РЎР°Р№С‚ Р°РІС‚РѕСЂР°">РџР°С„РќСѓС‚РёР™</a> <br>
 		<a href="https://twitter.com/pafnuty_name" target="_blank" title="Twitter">@pafnuty_name</a> <br>
-		<a href="http://gplus.to/pafnuty" target="_blank" title="google+">+Павел</a> <br>
-		<a href="mailto:pafnuty10@gmail.com" title="email автора">pafnuty10@gmail.com</a>
+		<a href="http://gplus.to/pafnuty" target="_blank" title="google+">+РџР°РІРµР»</a> <br>
+		<a href="mailto:pafnuty10@gmail.com" title="email Р°РІС‚РѕСЂР°">pafnuty10@gmail.com</a>
 	</div>
 
 	<!-- scripts -->
