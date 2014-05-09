@@ -47,24 +47,8 @@ $cfg = array(
 
 	// Массив с запросами, которые будут выполняться при установке
 	'queries'       => array(
-		"DROP TABLE IF EXISTS " . PREFIX . "_easylike_count",
-		"DROP TABLE IF EXISTS " . PREFIX . "_easylike_log",
-		"CREATE TABLE " . PREFIX . "_easylike_count (
-			`id` int(11) NOT NULL AUTO_INCREMENT,
-			`news_id` int(11) NOT NULL DEFAULT '0',
-			`comment_id` int(11) NOT NULL DEFAULT '0',
-			`likes` int(11) NOT NULL DEFAULT '0',
-			PRIMARY KEY (`id`),
-			KEY `likes` (`likes`)
-			) ENGINE=MyISAM /*!40101 DEFAULT CHARACTER SET " . COLLATE . " COLLATE " . COLLATE . "_general_ci */",
-		"CREATE TABLE " . PREFIX . "_easylike_log (
-			`id` int(11) NOT NULL AUTO_INCREMENT,
-			`news_id` int(11) NOT NULL DEFAULT '0',
-			`comment_id` int(11) NOT NULL DEFAULT '0',
-			`user_name` varchar(40) NOT NULL DEFAULT '',
-			`ip` varchar(16) NOT NULL DEFAULT '',
-			PRIMARY KEY (`id`)
-			) ENGINE=MyISAM /*!40101 DEFAULT CHARACTER SET " . COLLATE . " COLLATE " . COLLATE . "_general_ci */",
+		"ALTER TABLE " . PREFIX . "_easylike_count ADD `comment_id` INT(11) NOT NULL DEFAULT '0' AFTER `news_id`",
+		"ALTER TABLE " . PREFIX . "_easylike_log ADD `comment_id` INT(11) NOT NULL DEFAULT '0' AFTER `news_id`",
 	),
 
 	// Устанавливать админку (true/false). Включает показ кнопки установки и удаления админки.
@@ -129,14 +113,10 @@ jQuery(document).ready(function($) {
 
 $steps = <<<HTML
 <div class="descr">
-	<h2>Установка модуля</h2>
+	<h2>Обновление модуля до версии 1.2</h2>
 	<ol>
 		<li><b class="red">Сделать бэкап БД!</b></li>
-		<li>
-			<p>Открыть шаблон краткой и полной новости, в нужное место вставить строку подключения модуля:</p>
-			<textarea readonly>{include file="engine/modules/easylike/easylike.php?news_id={news-id}"}</textarea>
-			<small>Можно вставлять строку подключения в любое место, в любой шаблон, а не только шаблон новостей, <br>но главное условие &mdash; передача данных об ID новости. Например можно вставить такую строку подключения в шаблон main.tpl: <br> <code>{include file="engine/modules/easylike/easylike.php?news_id=4"}</code><br>В этом случаи будет показано количество лайков новости с ID=4 (и можно будет лайкать эту новость с любой страницы сайта)</small>
-		</li>
+
 		<li>
 			<p>Открыть шаблон comments.tpl, в нужное место вставить строку подключения модуля:</p>
 			<textarea readonly>{include file="engine/modules/easylike/easylike.php?comment_id={comment-id}"}</textarea>
@@ -148,23 +128,11 @@ $steps = <<<HTML
 			<small>В профиле пользователя данные выводятся через отдельный шаблон (можно указать свой шаблон через параметр &template=newtemplate). Все доступные теги указаны в дефолтном шаблоне, </small>
 		</li>
 		<li>
-			<p>Открыть любой js-файл, подключенный к шаблону и в самый конец добавить:</p>
+			<p>Открыть js-файл, в который вставляли код предыдущей версии модуля и заменить его на:</p>
 			<textarea readonly>{$jsInsert}</textarea>
 		</li>
 		<li>
-			<p>Открыть любой CSS-файл, подключенный к шаблону и в самый конец прописать:
-			<br><b class="red">Внимание!</b> Это дефолтные стили для модуля, вы можете менять их как угодно под свой сайт.</p>
-			<p>Кнопка будет выглядеть вот так:</p>
-			<p>
-				Обычное стсотояние: <span class="easylike_count">15</span>
-			</p>
-			<p>
-				В процессе лайка: <span class="easylike_count"><span class="easylike_load"><i class="easylike_circles ec1"></i><i class="easylike_circles ec2"></i><i class="easylike_circles ec3"></i></span></span>
-			</p>
-			<p>
-				Если уже лайкал кто-то в процессе чтения: <span class="easylike_count">15<span title="Пока вы смотрели страницу, запись понравилась ещё кому-то.">(3)</span></span>
-			</p>
-
+			<p>Открыть CSS-файл, в который вставляли код предыдущей версии модуля и заменить его.</p>
 			<textarea readonly>/* ==========================================================================
    Модуль Easy Like by ПафНутиЙ */
 /* ========================================================================== */
@@ -233,7 +201,7 @@ $steps = <<<HTML
 	@-o-keyframes easylikeBounce{0%{} 50%{background-color:#e74d3c} 100%{}}
 	@keyframes easylikeBounce{0%{} 50%{background-color:#e74d3c} 100%{}}</textarea>
 		</li>
-		<li>Выполнить установку БД модуля (кнопка ниже).</li>
+		<li>Выполнить обновление БД модуля (кнопка ниже).</li>
 	</ol>
 </div>
 HTML;
@@ -283,7 +251,7 @@ function installer() {
 			}
 		}
 
-		$output .= '<li><b>Установка завершена!</b></li></ul></div>';
+		$output .= '<li><b>Обновление завершено!</b></li></ul></div>';
 		$output .= '<div class="alert">Не забудьте удалить файл установщика!</div>';
 		if ($cfg['installAdmin'] && $install_admin) {
 			$output .= '<p><a class="btn" href="/' . $config['admin_path'] . '?mod=' . $cfg['moduleName'] . '" target="_blank" title="Перейти к управлению модулем">Настройка модуля</a></p> <hr>';
@@ -319,11 +287,11 @@ HTML;
 		if ($queries) {
 			$installForm = <<<HTML
 			<div class="form-field clearfix">
-				<div class="lebel">Установка модуля</div>
+				<div class="lebel">Обновление модуля</div>
 				<div class="control">
 					<form method="POST">
 						<input type="hidden" name="install" value="1">
-						<button class="btn" type="submit">Установить модуль</button>
+						<button class="btn" type="submit">Обновить модуль</button>
 						<span id="wtq" class="btn">Какие запросы будут выполнены?</span>
 					</form>
 				</div>
@@ -475,73 +443,6 @@ function chasetConflict($string) {
 		}
 		.easylike_count {text-shadow: none;}
 
-		/* ==========================================================================
-		   Модуль Easy Like by ПафНутиЙ */
-		/* ========================================================================== */
-
-			.easylike_count {
-				display: inline-block;
-				color: #e74c3c;
-				cursor: pointer;
-				font: normal 16px/16px Arial, Tahome, sans-serif;
-				background: #2c3e50 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABaElEQVR42qXUS0uUUQDH4XGcoiYpDBoogqg2AVWUm65QRAgVELRr08qIoAgICpRaRgS1lCAKShjcCd4QHXHjFxDxBqooIKgiOIqKKj4HGBiGGdR5f/AcOJs/Z3UqZp/eje3RRTJUUc8vShZnrz6Q5RONXIsymOIlX/jNMPejDNYzRQuhJaooWYJSXeENz9ghdIpsOS9M0kQr7YQqOcvMQV9YSZpqXpHrKkmWuUB+82SLDR7nD3d4wAK5agj1UNgWP/iYG7zJPd6xwm3GyO8vvRTrOmk6w+BDuhmhkZ+sUdg2ExRrihVOh8EXdPKEcrtFNRXxcKGLKPXzna9h8ByTRG2OQwlHklWiVMM36uKORU4SpUE2mQ2DI1ym3I7SQILxMNjFY8rtLQ28ZiyspvlMM5OMkmGa/dRHqINY7seu4xFnOE+Kf2RYZp38jpDiBs8ZoDZ/sLBa3nOJExzjMKENVpljiDb+s0VsF/laUSDICzycAAAAAElFTkSuQmCC') no-repeat 8px 50%;
-				padding: 6px 10px 6px 40px;
-				-webkit-border-radius: 3px;
-				border-radius: 3px;
-				-webkit-transition: all ease .5s;
-				-moz-transition: all ease .5s;
-				-ms-transition: all ease .5s;
-				-o-transition: all ease .5s;
-				transition: all ease .5s;
-			}
-			.easylike_count:hover {
-				color: #fff;
-				background: rgba(44, 62, 80, .7) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABZElEQVR42qXTP29NcRzH8W9vS9wSUknvwCDUYFCCRGqwEDoYwFSjXCSGMhnQB8ATsDN0kcYgMfUBsIELibQMbVJF0n8h5V6vX3JvcodzWu55J68zfvPJyTmlRqMR6xhgmnmuEWtJj/U84DVV6hwscrDCChcI3nKDyFOKtbvDNE9I/WALufWQ1yDXOUedVD+L5JY3vZeXTBBN3SxznsiRubCbcfq4SqsD9LLAHtr7ymLWwq08Zp5Bok2VvFa5R3Slh4Y4zihLnOVjxvJdZHWIcU6HgyepU+M2ZeI/lfjOSHqHl3jGGTrtGH10RXPZKFHQfT6Xmu9liqLNsSEa0gmigCP84XJa+I3tFOkNq8ymg+/ZT6eVuUsPn9LcMV4QHbpFqtr6sPe6/I4JpvjAJF/4l47ynJ3MtP6UK5xiB7up8JBJFvhJe5uocJiLvGIYCx3MaJib7GMbm9lI6hfLzFHjKY/4TfwFLOFzQdqSgkUAAAAASUVORK5CYII=') no-repeat 8px 50%;
-			}
-
-			/*v 1.2*/
-			.easylike_load {
-				width:19px;
-			}
-			.easylike_circles {
-				background-color: #2C3E50;
-				float: left;
-				height: 4px;
-				margin: 6px 2px 6px 0;
-				width: 4px;
-				-webkit-animation-name: easylikeBounce;
-				-webkit-animation-duration: 0.8999999999999999s;
-				-webkit-animation-iteration-count: infinite;
-				-webkit-animation-direction: linear;
-				-o-animation-name: easylikeBounce;
-				-o-animation-duration: 0.8999999999999999s;
-				-o-animation-iteration-count: infinite;
-				-o-animation-direction: linear;
-				animation-name: easylikeBounce;
-				animation-duration: 0.8999999999999999s;
-				animation-iteration-count: infinite;
-				animation-direction: linear;
-				-webkit-border-radius: 3px;
-				border-radius: 3px;
-			}
-			.easylike_circles.ec1 {
-				-webkit-animation-delay: 0.18s;
-				-o-animation-delay: 0.18s;
-				animation-delay: 0.18s;
-			}
-			.easylike_circles.ec2 {
-				-webkit-animation-delay: 0.42000000000000004s;
-				-o-animation-delay: 0.42000000000000004s;
-				animation-delay: 0.42000000000000004s;
-			}
-			.easylike_circles.ec3 {
-				-webkit-animation-delay: 0.5399999999999999s;
-				-o-animation-delay: 0.5399999999999999s;
-				animation-delay: 0.5399999999999999s;
-			}
-			@-webkit-keyframes easylikeBounce{0%{} 50%{background-color:#e74d3c} 100%{}}
-			@-o-keyframes easylikeBounce{0%{} 50%{background-color:#e74d3c} 100%{}}
-			@keyframes easylikeBounce{0%{} 50%{background-color:#e74d3c} 100%{}}
 	</style>
 </head>
 <body>
@@ -551,7 +452,7 @@ function chasetConflict($string) {
 	</header>
 	<section>
 
-		<h2 class="gray ta-center">Мастер установки модуля <?=$cfg['moduleTitle']?> для DLE <?=$cfg['dleVersion']?></h2>
+		<h2 class="gray ta-center">Мастер обновления модуля <?=$cfg['moduleTitle']?> для DLE <?=$cfg['dleVersion']?></h2>
 
 		<?php
 			$output = installer();
