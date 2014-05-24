@@ -139,7 +139,7 @@ $steps = <<<HTML
 		</li>
 		<li>
 			<p>Открыть шаблон comments.tpl, в нужное место вставить строку подключения модуля:</p>
-			<textarea readonly>{include file="engine/modules/easylike/easylike.php?comment_id={comment-id}"}</textarea>
+			<textarea readonly>{include file="engine/modules/easylike/easylike.php?comment_id={id}"}</textarea>
 			<small>Различие строк подключеия только в передаваемых данных (id новости или id комментария), поэтому строку можно так же использовать вне шаблона комментариев.</small>
 		</li>
 		<li>
