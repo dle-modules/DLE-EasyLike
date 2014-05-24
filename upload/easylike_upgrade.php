@@ -34,10 +34,10 @@ $cfg = array(
 	'moduleDescr'   => 'Модуль для организации лайков на сайте',
 
 	// Версия модуля, для установщика
-	'moduleVersion' => '1.2',
+	'moduleVersion' => '1.3',
 
 	// Дата выпуска модуля, для установщика
-	'moduleDate'    => '09.05.2014',
+	'moduleDate'    => '24.05.2014',
 
 	// Версии DLE, поддержваемые модулем, для установщика
 	'dleVersion'    => '9.x - 10.x',
@@ -113,13 +113,13 @@ jQuery(document).ready(function($) {
 
 $steps = <<<HTML
 <div class="descr">
-	<h2>Обновление модуля до версии 1.2</h2>
+	<h2>Обновление модуля до версии 1.3</h2>
 	<ol>
 		<li><b class="red">Сделать бэкап БД!</b></li>
 
 		<li>
 			<p>Открыть шаблон comments.tpl, в нужное место вставить строку подключения модуля:</p>
-			<textarea readonly>{include file="engine/modules/easylike/easylike.php?comment_id={comment-id}"}</textarea>
+			<textarea readonly>{include file="engine/modules/easylike/easylike.php?comment_id={id}"}</textarea>
 			<small>Различие строк подключеия только в передаваемых данных (id новости или id комментария), поэтому строку можно так же использовать вне шаблона комментариев.</small>
 		</li>
 		<li>
