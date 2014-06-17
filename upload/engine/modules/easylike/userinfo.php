@@ -30,11 +30,13 @@ if (!$easyLike) {
 		}
 		$tpl->load_template($cfg['template'] . '.tpl');
 
-		if(strpos($tpl->copy_template, "{easylike_news}") !== false) {
+		$easylike_news = '0';
+		$easylike_comments = '0';
+		$easylike_all = '0';
 
+		if(strpos($tpl->copy_template, "{easylike_news}") !== false || strpos($tpl->copy_template, "{easylike_all}") !== false) {
 			// Запрос в БД на получение всех ID новостей юзера.
 			$rowNews = $db->super_query("SELECT id FROM " . PREFIX . "_post WHERE autor = '" . $cfg['userName'] . "'", true);
-			$easylike_news = '0';
 			if (is_array($rowNews)) {
 				$_ids = array();
 				foreach ($rowNews as $_id) {
@@ -53,10 +55,9 @@ if (!$easyLike) {
 			$tpl->set('{easylike_news_text}', wordSpan($easylike_news,'лайк||а|ов'));
 		}
 
-		if(strpos($tpl->copy_template, "{easylike_comments}") !== false) {
+		if(strpos($tpl->copy_template, "{easylike_comments}") !== false || strpos($tpl->copy_template, "{easylike_all}") !== false) {
 			// Запрос в БД на получение всех ID комментариев юзера.
 			$rowComments = $db->super_query("SELECT id FROM " . PREFIX . "_comments WHERE autor = '" . $cfg['userName'] . "'", true);
-			$easylike_comments = '0';
 			if (is_array($rowComments)) {
 				$_idsc = array();
 				foreach ($rowComments as $_id) {
@@ -73,6 +74,45 @@ if (!$easyLike) {
 			$tpl->set('{easylike_comments}', $easylike_comments);
 			$tpl->set('{easylike_comments_text}', wordSpan($easylike_comments,'лайк||а|ов'));
 		}
+
+		if(strpos($tpl->copy_template, "{easylike_all}") !== false) {
+
+			$easylike_all = $easylike_comments + $easylike_news;
+
+			$tpl->set('{easylike_all}', $easylike_all);
+			$tpl->set('{easylike_all_text}', wordSpan($easylike_all,'лайк||а|ов'));
+		}
+
+		if ($easylike_news > 0) {
+			$tpl->set( '[easylike_news]', "" );
+			$tpl->set( '[/easylike_news]', "" );
+			$tpl->set_block( "'\\[not-easylike_news\\](.*?)\\[/not-easylike_news\\]'si", "" );
+		} else {
+			$tpl->set( '[not-easylike_news]', "" );
+			$tpl->set( '[/not-easylike_news]', "" );
+			$tpl->set_block( "'\\[easylike_news\\](.*?)\\[/easylike_news\\]'si", "" );
+		}
+
+		if ($easylike_comments > 0) {
+			$tpl->set( '[easylike_comments]', "" );
+			$tpl->set( '[/easylike_comments]', "" );
+			$tpl->set_block( "'\\[not-easylike_comments\\](.*?)\\[/not-easylike_comments\\]'si", "" );
+		} else {
+			$tpl->set( '[not-easylike_comments]', "" );
+			$tpl->set( '[/not-easylike_comments]', "" );
+			$tpl->set_block( "'\\[easylike_comments\\](.*?)\\[/easylike_comments\\]'si", "" );
+		}
+
+		if ($easylike_all > 0) {
+			$tpl->set( '[easylike_all]', "" );
+			$tpl->set( '[/easylike_all]', "" );
+			$tpl->set_block( "'\\[not-easylike_all\\](.*?)\\[/not-easylike_all\\]'si", "" );
+		} else {
+			$tpl->set( '[not-easylike_all]', "" );
+			$tpl->set( '[/not-easylike_all]', "" );
+			$tpl->set_block( "'\\[easylike_all\\](.*?)\\[/easylike_all\\]'si", "" );
+		}
+
 
 		$tpl->compile('easyLike');
 		$easyLike = $tpl->result['easyLike'];

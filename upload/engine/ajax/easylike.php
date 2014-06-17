@@ -27,6 +27,7 @@ define( 'ROOT_DIR', substr( dirname(  __FILE__ ), 0, -12 ) );
 define( 'ENGINE_DIR', ROOT_DIR . '/engine' );
 
 include ENGINE_DIR . '/data/config.php';
+include ENGINE_DIR . '/modules/easylike/easylike_config.php';
 
 if( $config['http_home_url'] == "" ) {
 	$config['http_home_url'] = explode( "engine/ajax/easylike.php", $_SERVER['PHP_SELF'] );
@@ -51,15 +52,6 @@ if( $_REQUEST['skin'] == "" OR !@is_dir( ROOT_DIR . '/templates/' . $_REQUEST['s
 	die( "Hacking attempt!" );
 }
 
-if( $config["lang_" . $config['skin']] ) {
-	if ( file_exists( ROOT_DIR . '/language/' . $config["lang_" . $config['skin']] . '/website.lng' ) ) {
-		include_once ROOT_DIR . '/language/' . $config["lang_" . $config['skin']] . '/website.lng';
-	} else die("Language file not found");
-} else {
-	include_once ROOT_DIR . '/language/' . $config['langs'] . '/website.lng';
-}
-
-$config['charset'] = ($lang['charset'] != '') ? $lang['charset'] : $config['charset'];
 $user_group = get_vars( "usergroup" );
 if( ! $user_group ) {
 	$user_group = array ();
@@ -110,13 +102,21 @@ if (!$likes['likes']) {
 	$likes['likes'] = 0;
 }
 
+$notSendNotify = false;
+
+if (in_array($member_id['name'], $easylikeConfig['not_send_email']['users']) || in_array($member_id['user_group'], $easylikeConfig['not_send_email']['groups_id'])) {
+	$notSendNotify = true;
+}
+
 if (count(explode('.', $ip)) == 4 ) {
 	// Если получен IP посетителя - работаем.
 	if (!$like_id) {
 		// Если записи о лайках нет - добавим.
 		$db->query("INSERT INTO " . PREFIX . "_easylike_count ($col, likes) VALUES ($id, '1')");
 		$easyLike = setLog($col, $likes['likes'], $id, $name, $ip);
-		sendNotify($id, $name, $is_comment);
+		if(!$notSendNotify) {
+			sendNotify($id, $name, $is_comment);
+		}
 	} else {
 		// Если запись есть, то проверяем, не лайкал ли этот посетитель.
 		$select = "SELECT {$col} FROM " . PREFIX . "_easylike_log WHERE {$col} = $id AND {$where}";
@@ -126,7 +126,9 @@ if (count(explode('.', $ip)) == 4 ) {
 			// Если не лайкал - работаем.
 			$db->query("UPDATE " . PREFIX . "_easylike_count SET likes=likes+1 WHERE {$col} ='".$id."'");
 			$easyLike = setLog($col, $likes['likes'], $id, $name, $ip);
-			sendNotify($id, $name, $is_comment);
+			if(!$notSendNotify) {
+				sendNotify($id, $name, $is_comment);
+			}
 		} else {
 			// Если лайкал - шлём ему привет :).
 			$easyLike = ':-)';
@@ -228,7 +230,7 @@ HTML;
 HTML;
 		}
 
-		$mail->send($ml['email'],$mail_subj, $mail_text );
+		$mail->send($ml['email'], $mail_subj, $mail_text );
 	}
 }
 

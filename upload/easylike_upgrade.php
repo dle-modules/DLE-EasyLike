@@ -34,10 +34,10 @@ $cfg = array(
 	'moduleDescr'   => 'Модуль для организации лайков на сайте',
 
 	// Версия модуля, для установщика
-	'moduleVersion' => '1.3',
+	'moduleVersion' => '1.4',
 
 	// Дата выпуска модуля, для установщика
-	'moduleDate'    => '24.05.2014',
+	'moduleDate'    => '17.06.2014',
 
 	// Версии DLE, поддержваемые модулем, для установщика
 	'dleVersion'    => '9.x - 10.x',
@@ -113,7 +113,7 @@ jQuery(document).ready(function($) {
 
 $steps = <<<HTML
 <div class="descr">
-	<h2>Обновление модуля до версии 1.3</h2>
+	<h2>Обновление модуля до версии {$cfg['moduleVersion']}</h2>
 	<ol>
 		<li><b class="red">Сделать бэкап БД!</b></li>
 
