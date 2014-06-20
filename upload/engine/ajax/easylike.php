@@ -102,21 +102,13 @@ if (!$likes['likes']) {
 	$likes['likes'] = 0;
 }
 
-$notSendNotify = false;
-
-if (in_array($member_id['name'], $easylikeConfig['not_send_email']['users']) || in_array($member_id['user_group'], $easylikeConfig['not_send_email']['groups_id'])) {
-	$notSendNotify = true;
-}
-
 if (count(explode('.', $ip)) == 4 ) {
 	// Если получен IP посетителя - работаем.
 	if (!$like_id) {
 		// Если записи о лайках нет - добавим.
 		$db->query("INSERT INTO " . PREFIX . "_easylike_count ($col, likes) VALUES ($id, '1')");
 		$easyLike = setLog($col, $likes['likes'], $id, $name, $ip);
-		if(!$notSendNotify) {
-			sendNotify($id, $name, $is_comment);
-		}
+		sendNotify($id, $name, $is_comment);
 	} else {
 		// Если запись есть, то проверяем, не лайкал ли этот посетитель.
 		$select = "SELECT {$col} FROM " . PREFIX . "_easylike_log WHERE {$col} = $id AND {$where}";
@@ -126,9 +118,7 @@ if (count(explode('.', $ip)) == 4 ) {
 			// Если не лайкал - работаем.
 			$db->query("UPDATE " . PREFIX . "_easylike_count SET likes=likes+1 WHERE {$col} ='".$id."'");
 			$easyLike = setLog($col, $likes['likes'], $id, $name, $ip);
-			if(!$notSendNotify) {
-				sendNotify($id, $name, $is_comment);
-			}
+			sendNotify($id, $name, $is_comment);
 		} else {
 			// Если лайкал - шлём ему привет :).
 			$easyLike = ':-)';
@@ -185,10 +175,11 @@ function setLog($col = 'news_id', $count = 0, $id = 1, $name = '', $ip = '') {
  * @return  отправка почты
  */
 function sendNotify($id = 0, $member_name = 'Гость', $is_comment = false) {
-	global $config, $db;
+	global $config, $db, $easylikeConfig;
 
 	$id = (int)$id;
 	$member_name = ($member_name == '') ? 'Гость' : $member_name ;
+	$notSendNotify = false;
 
 	if ($is_comment) {
 		$getName = $db->super_query("SELECT post_id, autor FROM ".PREFIX."_comments WHERE id='{$id}'");
@@ -197,10 +188,13 @@ function sendNotify($id = 0, $member_name = 'Гость', $is_comment = false) {
 	}
 	$userName = $db->safesql($getName['autor']);
 
+	$ml = $db->super_query("SELECT email, name, allow_mail, user_group FROM ".USERPREFIX."_users WHERE name='{$userName}'");
 
-	$ml = $db->super_query("SELECT email, name, allow_mail FROM ".USERPREFIX."_users WHERE name='{$userName}'");
+	if (in_array($ml['name'], $easylikeConfig['not_send_email']['users']) || in_array($ml['user_group'], $easylikeConfig['not_send_email']['groups_id'])) {
+		$notSendNotify = true;
+	}
 
-	if($ml['allow_mail']) {
+	if($ml['allow_mail'] && !$notSendNotify) {
 		include_once ENGINE_DIR . '/classes/mail.class.php';
 		$mail = new dle_mail($config, true);
 
