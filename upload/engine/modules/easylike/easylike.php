@@ -9,26 +9,29 @@ twitter: https://twitter.com/pafnuty_name
 google+: http://gplus.to/pafnuty
 email:   pafnuty10@gmail.com
 =============================================================================
-*/
+ */
 
-if (!defined('DATALIFEENGINE')) die("Go fuck yourself!");
-$cfg  = array(
-    'newsId' => !empty($news_id) ? (int)$news_id : false,
-    'commentId' => !empty($comment_id) ? (int)$comment_id : false,
+if (!defined('DATALIFEENGINE')) {
+	die("Go fuck yourself!");
+}
+
+$cfg = array(
+	'newsId'    => !empty($news_id) ? (int) $news_id : false,
+	'commentId' => !empty($comment_id) ? (int) $comment_id : false,
 );
 if ($cfg['newsId'] || $cfg['commentId']) {
 	if ($cfg['newsId']) {
-		$id = $cfg['newsId'];
+		$id  = $cfg['newsId'];
 		$col = 'news_id';
 	}
 	if ($cfg['commentId']) {
-		$id = $cfg['commentId'];
+		$id  = $cfg['commentId'];
 		$col = 'comment_id';
 	}
 	// Запрос в БД
 	$row = $db->super_query("SELECT news_id, likes FROM " . PREFIX . "_easylike_count WHERE {$col} = '" . $id . "'");
 
-	$likeCount = ($row['likes']) ? $row['likes'] : false ;
+	$likeCount = ($row['likes']) ? $row['likes'] : false;
 
 	// Условие для вывода лайков
 	if ($likeCount) {
